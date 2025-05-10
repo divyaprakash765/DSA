@@ -1,34 +1,32 @@
 class Solution {
 public:
+    vector<vector<int>> dir = {{0,1},{1,0},{-1,0},{0,-1}};
+
     int minTimeToReach(vector<vector<int>>& moveTime) {
-        int n = moveTime.size(), m = moveTime[0].size();
-        vector<vector<int>> dp(n, vector<int>(m, INT_MAX));
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minh;
-        minh.push({0, 0, 0});
-        moveTime[0][0] = 0;
+        int n = moveTime.size();
+        int m = moveTime[0].size();
+        vector<vector<int>> arrival_time(n,vector<int>(m,INT_MAX));
+        arrival_time[0][0] = 0;
+        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> pq;
+        pq.push({0,0,0});
 
-        vector<vector<int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-        while (!minh.empty()) {
-            auto current = minh.top();
-            minh.pop();
-            int currTime = current[0];
-            int currRow = current[1];
-            int currCol = current[2];
-            if (currTime >= dp[currRow][currCol]) continue;
-            if (currRow == n - 1 && currCol == m - 1) return currTime;
-            dp[currRow][currCol] = currTime;
-
-            for (auto& direction : directions) {
-                int nextRow = currRow + direction[0];
-                int nextCol = currCol + direction[1];
-                if (nextRow >= 0 && nextRow < n &&
-                    nextCol >= 0 && nextCol < m &&
-                    dp[nextRow][nextCol] == INT_MAX) {
-                    int nextTime = max(moveTime[nextRow][nextCol], currTime) + 1;
-                    minh.push({nextTime, nextRow, nextCol});
+        while(!pq.empty()){
+            int time = pq.top()[0];
+            int i = pq.top()[1];
+            int j = pq.top()[2];
+            pq.pop();
+            if(time > arrival_time[i][j]) continue;
+            for(auto& d : dir){
+                int i_ = i + d[0];
+                int j_ = j + d[1];
+                if(i_ < 0 || j_ < 0 || i_ >= n || j_ >= m) continue;
+                int newTime = max(time, moveTime[i_][j_]) + 1;
+                if(newTime < arrival_time[i_][j_]) {
+                    arrival_time[i_][j_] = newTime;
+                    pq.push({newTime,i_,j_});
                 }
             }
         }
-        return -1;
+        return arrival_time[n-1][m-1];
     }
 };
