@@ -7,7 +7,7 @@ public:
         int j = 0;
         int sum = 0;
         int ans = 0;
-        set<int> s;
+        unordered_set<int> s;
 
         while(j<n){
         while(s.find(nums[j]) != s.end()){
