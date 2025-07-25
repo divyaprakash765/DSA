@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxSum(vector<int>& nums) {
-        set<int> s(nums.begin(),nums.end());
+        unordered_set<int> s(nums.begin(),nums.end());
         int ans = 0;
         for(auto& it : s){
             if(it > 0) ans += it;
