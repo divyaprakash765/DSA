@@ -15,7 +15,7 @@ public:
 
     int minimumTotal(vector<vector<int>>& triangle) {
         int n = triangle.size();
-        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        vector<vector<int>> dp(n,vector<int>(n,0));
         dp[0][0] = triangle[0][0];
 
         for(int i=1;i<n;i++){
@@ -29,6 +29,6 @@ public:
             }
         }
 
-        return *min_element(dp[n-1].begin(), dp[n-1].begin() + n);
+        return *min_element(dp[n-1].begin(), dp[n-1].end());
     }
 };
